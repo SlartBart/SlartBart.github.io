@@ -41,6 +41,15 @@
         createCollectable(type.db, 550, 550);
         createCollectable(type.db, 600, 550);
         createCollectable(type.db, 650, 550);
+        createCollectable(type.kennedi, 500, 425);
+        createCollectable(type.steve, 100, 325);
+        createCollectable(type.db, 500, 225);
+        createCollectable(type.db, 550, 225);
+        createCollectable(type.db, 600, 225);
+        createCollectable(type.db, 650, 225);
+        createCollectable(type.db, 700, 225);
+        createCollectable(type.kennedi, 850, 125);
+        
 
         
         
