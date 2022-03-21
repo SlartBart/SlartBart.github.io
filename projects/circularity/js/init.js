@@ -20,13 +20,21 @@ var init = function (window) {
         ////////////////////////////////////////////////////////////
         
         // TODO 1 : Declare and initialize our variables
-
+        var circle;
+        var circles = [];
 
         // TODO 2 : Create a function that draws a circle 
-        
+        function drawCircle(){
+            circle = draw.randomCircleInArea(canvas, true, true, '#999', 2);
+            physikz.addRandomVelocity(circle, canvas, -2, -2);
+            view.addChild(circle);
+            circles.push(circle); 
+        }
 
         // TODO 3 / 8 : Call the drawCircle() function 
-
+        for(var x = 0; x < 100; x++){
+            drawCircle();
+        }
 
         ////////////////////////////////////////////////////////////
         ///////////////// PROGRAM LOGIC ////////////////////////////
@@ -39,13 +47,16 @@ var init = function (window) {
         */
         function update() {
             // TODO 4 : Update the circle's position //
-
+            /*removed due to DRY, for loop below replaces*/
             
             // TODO 5 / 10 : Call game.checkCirclePosition() on your circles.
-           
-
+           /*removed due to DRY, for loop below replaces*/ 
             // TODO 9 : Iterate over the array
-           
+           for(var i = 0; i < circles.length; i++){
+               var eachCircle = circles[i];
+               physikz.updatePosition(eachCircle);
+               game.checkCirclePosition(eachCircle);   
+           }
             
         }
     
@@ -57,12 +68,20 @@ var init = function (window) {
         game.checkCirclePosition = function(circle) {
 
             // if the circle has gone past the RIGHT side of the screen then place it on the LEFT
-            if ( circle.x > canvas.width ) {
-                circle.x = 0;
+            if ( circle.x - circle.radius > canvas.width )/*check for right, move to left*/ {
+                circle.x = 0 - circle.radius;
             }
-            
             // TODO 7 : YOUR CODE STARTS HERE //////////////////////
             
+            if (circle.y - circle.radius > canvas.height)/*check for bottom, move to top*/{
+                circle.y = 0 - circle.radius;
+            }
+            if (circle.x + circle.radius < 0)/*check for left, move to right*/{
+                circle.x = canvas.width + circle.radius;
+            }
+             if (circle.y + circle.radius < 0)/*check for top, move to bottom*/{
+                circle.y = canvas.height + circle.radius;
+            }
 
 
             // YOUR TODO 7 CODE ENDS HERE //////////////////////////
