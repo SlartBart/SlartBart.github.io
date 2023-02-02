@@ -39,6 +39,7 @@ function runProgram(){
   function newFrame() {
     repositionGameItem();
     redrawGameItem();
+    borders();
   }
   
   /* 
@@ -47,32 +48,35 @@ function runProgram(){
   function handleKeyDown(event) {
     if(event.key===KEY.DOWN)
     {
-      console.log("down pressed");
       yspeed = 5;//move down
     }
     else if(event.key===KEY.UP)
     {
-      console.log("up pressed");
       yspeed = -5;//move up
     }
     else if(event.key===KEY.LEFT)
     {
-      console.log("left pressed");
       xspeed = -5;//move left
     }
     else if(event.key===KEY.RIGHT)
     {
-      console.log("right pressed");
       xspeed = 5;//move right
     }
-    
-
+    // possible kink to work out. hitting an opposing key causes the box to move that way
 
   }
-  function handleKeyUp()
+  function handleKeyUp(event)
   {
-    xspeed = 0;
-    yspeed = 0;
+    if(event.key===KEY.RIGHT||event.key===KEY.LEFT)
+    {
+      xspeed = 0;//stops moving left or right when left or right key is released
+    }
+    if(event.key===KEY.UP||event.key===KEY.DOWN)
+    {
+      yspeed = 0;//stops moving up or down when up or down key is released
+    }
+    //basically: fixed glitch where you could still hold a key and it not move in that direction
+    //specifically if you were to hit up/down and left/right and released one it would stop. 
   }
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
@@ -80,15 +84,23 @@ function runProgram(){
 
   function repositionGameItem()
   {
-    ypos+=yspeed;//walker increases y, moving down
+    ypos += yspeed;//walker increases by y, moving down or up
 
-    xpos+=xspeed;//walker decreases x, moving right
+    xpos += xspeed;//walker increases by x, moving right or left
   }
   function redrawGameItem()
   {//places the walker at its new location
     $("#walker").css("top", ypos);
     $("#walker").css("left", xpos);
   }
+  function borders()
+  {
+    if(ypos<0){ypos=0;}
+    if(ypos>390){ypos=390;}
+    if(xpos<0){xpos=0;}
+    if(xpos>390){xpos=390};
+  }
+  //the borders function keeps the ball from leaving the box, even if the player wants it to.
   function endGame() {
     // stop the interval timer
     clearInterval(interval);
