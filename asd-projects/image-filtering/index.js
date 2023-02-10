@@ -40,11 +40,11 @@ function applyFilter(filterFunction)
   {
     for(var y = 0; y<image[x].length; y++)
     {
-      rgbString=image[x][y];
-      rgbNumbers=rgbStringToArray(rgbString);
-      filterFunction(rgbNumbers);
-      rgbString=rgbArrayToString(rgbNumbers);
-      image[x][y]=rgbString;
+      rgbString = image[x][y];//selects current pixel
+      rgbNumbers = rgbStringToArray(rgbString);//convert to array
+      filterFunction(rgbNumbers);//apply change to variable
+      rgbString = rgbArrayToString(rgbNumbers);//back to string
+      image[x][y] = rgbString;//apply change to the base
     }
   }
 }
@@ -72,24 +72,24 @@ function applyFilterNoBackground(filterFunction)
 // TODO 5: Create the keepInBounds function
 function keepInBounds(num)
 {
-  var MAX=255;
-  var MIN=0;
+  var MAX=255;//remove magic number 255
+  var MIN=0;//remove magic number 0
   return Math.max(MIN, Math.min(MAX,num));
 }
 // TODO 3: Create reddify function
 function reddify(array)
 {
-  array[RED]=200;
+  array[RED]=200;//makes red value equal 200
 }
 
 // TODO 6: Create more filter functions
 function decreaseBlue(array)
 {
-  array[BLUE]= keepInBounds(array[BLUE]-50);
+  array[BLUE]= keepInBounds(array[BLUE]-50);//decreases blue value by 50 units, to the minimum of 0
 }
 function increaseGreenByBlue(array)
 {
-  array[GREEN] = keepInBounds(array[BLUE] + array[GREEN])
+  array[GREEN] = keepInBounds(array[BLUE] + array[GREEN]);//increases the green value by the blue value, to the maximum of 255
 }
 
 // CHALLENGE code goes below here
