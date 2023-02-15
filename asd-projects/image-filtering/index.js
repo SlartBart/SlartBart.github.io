@@ -23,7 +23,7 @@ function applyAndRender() {
   applyFilterNoBackground(reddify);
   applyFilterNoBackground(decreaseBlue);
   applyFilter(increaseGreenByBlue);
-  
+  smudge();
 
   // do not change the below line of code
   render($("#display"), image);
@@ -93,3 +93,21 @@ function increaseGreenByBlue(array)
 }
 
 // CHALLENGE code goes below here
+function smudge()
+{
+  for(var i = 0; i<image.length; i++)
+  {
+    for(var j = 0; j<image[i].length-1; j++)
+    {
+      var base = rgbStringToArray(image[i][j]);
+      var change = rgbStringToArray(image[i][j+1]);
+      var result = [];
+      for(var p = 0; p<base.length; p++)
+      {
+        result.push(Math.ceil((base[p]-change[p])/4));
+        base[p]=keepInBounds(base[p]+result[p]);
+      }
+      image[i][j]=rgbArrayToString(base);
+    }
+  }
+}
