@@ -23,7 +23,7 @@ function applyAndRender() {
   applyFilterNoBackground(reddify);
   applyFilterNoBackground(decreaseBlue);
   applyFilter(increaseGreenByBlue);
-  smudge();
+  applyFilter(smudge);
 
   // do not change the below line of code
   render($("#display"), image);
@@ -36,13 +36,20 @@ function applyAndRender() {
 // TODO 1, 2 & 4: Create the applyFilter function here
 function applyFilter(filterFunction)
 {
+  var pix;
+  var pixVal;
   for(var x = 0; x<image.length; x++)
   {
     for(var y = 0; y<image[x].length; y++)
     {
       rgbString = image[x][y];//selects current pixel
+      pix = image[x][y+1];//selects next pixel
+      if(y<image[x].length-1)//to prevent glitch, only converts when an actual value is present, no need to decode, no change happens to it
+      {
+        pixVal = rgbStringToArray(pix);//converts the base pix to an array
+      }
       rgbNumbers = rgbStringToArray(rgbString);//convert to array
-      filterFunction(rgbNumbers);//apply change to variable
+      filterFunction(rgbNumbers, pixVal || null, y);//apply change to variable
       rgbString = rgbArrayToString(rgbNumbers);//back to string
       image[x][y] = rgbString;//apply change to the base
     }
@@ -77,37 +84,30 @@ function keepInBounds(num)
   return Math.max(MIN, Math.min(MAX,num));
 }
 // TODO 3: Create reddify function
-function reddify(array)
+function reddify(array, a, b)
 {
   array[RED]=200;//makes red value equal 200
 }
 
 // TODO 6: Create more filter functions
-function decreaseBlue(array)
+function decreaseBlue(array, a, b)
 {
-  array[BLUE]= keepInBounds(array[BLUE]-50);//decreases blue value by 50 units, to the minimum of 0
+  array[BLUE] = keepInBounds(array[BLUE]-50);//decreases blue value by 50 units, to the minimum of 0
 }
-function increaseGreenByBlue(array)
+function increaseGreenByBlue(array,a ,b)
 {
   array[GREEN] = keepInBounds(array[BLUE] + array[GREEN]);//increases the green value by the blue value, to the maximum of 255
 }
 
 // CHALLENGE code goes below here
-function smudge()
+function smudge(pix, nextPix, end)
 {
-  for(var i = 0; i<image.length; i++)
-  {
-    for(var j = 0; j<image[i].length-1; j++)
-    {
-      var base = rgbStringToArray(image[i][j]);
-      var change = rgbStringToArray(image[i][j+1]);
-      var result = [];
-      for(var p = 0; p<base.length; p++)
+  if(end<image[0].length-1){//ensures unly runs where there is data to use
+      var result = [];//stores data 
+      for(var p = 0; p<nextPix.length; p++)//runs over the RED, GREEN, and BLUE values
       {
-        result.push(Math.ceil((base[p]-change[p])/4));
-        base[p]=keepInBounds(base[p]+result[p]);
+        result.push(Math.ceil((pix[p]-nextPix[p])/4));//quickly stores change in result
+        pix[p]=keepInBounds(pix[p]+result[p]);//applys change to pix, which is the active pixel
       }
-      image[i][j]=rgbArrayToString(base);
     }
-  }
 }
