@@ -84,7 +84,7 @@ function keepInBounds(num)
   return Math.max(MIN, Math.min(MAX,num));
 }
 // TODO 3: Create reddify function
-function reddify(array, a, b)
+function reddify(array, a, b)//BIG HONKING NOTE: a and b exist in order to get rid of unused data
 {
   array[RED]=200;//makes red value equal 200
 }
