@@ -14,8 +14,14 @@
  */
 function isArray(value) {
     // YOUR CODE BELOW HERE //
-    
-    
+    if(Array.isArray(value))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
     
     
     // YOUR CODE ABOVE HERE //
@@ -31,9 +37,14 @@ function isArray(value) {
  */
 function isObject(value) {
     // YOUR CODE BELOW HERE //
-    
-    
-    
+    if(Object.prototype.toString.call(value)==='[object Object]')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
     
     // YOUR CODE ABOVE HERE //
 }
@@ -46,8 +57,14 @@ function isObject(value) {
  */
 function isCollection(value) {
     // YOUR CODE BELOW HERE //
-    
-    
+    if(Object.prototype.toString.call(value)==='[object Object]'||Array.isArray(value))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
     
     
     // YOUR CODE ABOVE HERE //
@@ -57,15 +74,15 @@ function isCollection(value) {
  * Given an input value, return the type of the value as a String
  * 
  * Types are one of: 
- *    - "string"
- *    - "array"
- *    - "object"
- *    - "undefined"
- *    - "number"
- *    - "boolean"
- *    - "null"
- *    - "function"
- *    - "date"
+ *    - "string" typeof
+ *    - "array" special
+ *    - "object" special
+ *    - "undefined" typeof
+ *    - "number" typeof
+ *    - "boolean" typeof
+ *    - "null" if value === null
+ *    - "function" typeof
+ *    - "date" special
  * 
  * Examples:
  *    typeOf(134) -> "number"
@@ -74,7 +91,26 @@ function isCollection(value) {
  */ 
 function typeOf(value) {
     // YOUR CODE BELOW HERE //
-    
+    if(value === null)
+    {
+        return "null";
+    }
+    else if(typeof value != 'object'&& typeof value != "symbol")
+    {
+        return typeof(value);
+    }
+    else if(Object.prototype.toString.call(value) === "[object Object]")
+    {
+        return "object";
+    }
+    else if(Object.prototype.toString.call(value) === "[object Date]")
+    {
+        return "date";
+    }
+    else if(Array.isArray(value))
+    {
+        return "array";
+    }
     
     
     
