@@ -1,7 +1,7 @@
 gameplay: 
     Bounce a ball off of two platforms, controlled by two players. 
     On startup, platforms in center on their sides, ball in true center of screen, ball movement randomized, but never more than facing 95% upward, or 95% to the side
-    Game ends when player1 or player2 scores a total of ten points. 
+    Game ends after 20 rounds
     ifs:
         if hit wall, bounce
         if hit score area, reset ball position and paddle position, wait until spacebar pressed to start next round
