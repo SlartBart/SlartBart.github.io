@@ -1,0 +1,49 @@
+gameplay: 
+    Bounce a ball off of two platforms, controlled by two players. 
+    On startup, platforms in center on their sides, ball in true center of screen, ball movement randomized, but never more than facing 95% upward, or 95% to the side
+    Game ends when player1 or player2 scores a total of ten points. 
+    ifs:
+        if hit wall, bounce
+        if hit score area, reset ball position and paddle position, wait until spacebar pressed to start next round
+        if hit paddle, alter both speed and vector movement, not just reverse, make it change how fast it moves up/dowm and left/right
+        if totalRounds is 20, initiate endgame sequence: remove all objects on screen, compare player1 to player2, and output appropriate responce. 
+        nonessentials:
+            after each bounce, make ball move faster and paddles, 
+            after 10 bounces between paddles, increase point value of the match. 
+
+components:
+    static:
+        screen, with a 3:4 height to width size ratio
+        score total: on screen, top middle, with player1:player2 style
+        messages, in the middle of the screen, displayed at appropriate moments: 
+            "press space to start game"
+            "press space for next match"
+            "player x wins, with y points"
+            "its a tie!"
+        match value, underneath the score total
+    moving:
+        paddles for player one and player two:
+            need position value, 
+            only alter the y value, 
+        ball:
+            positionx and positiony values
+            speed value
+            current movement method
+    displayed data:
+        score of player1
+        score of player2
+        match value data
+
+events:
+    user-event: 
+        arrow keys up/down determine player1 position
+        w and s in the WASD block determine player 2 position
+        spacebar to continue a game after a match is over, and to reset the board after game over and score desplay
+    gameplay-event:
+        wall-bounce:
+            invert y movement as needed, if bottom, movement now up, if top, movement now down
+        paddle bounce:
+            invert x movement and increase intensity after every 3 hits
+            change y movement factor, or invert it entirely, randomly
+        score:
+            increase corresponding player's score by match value, and move into next match sequence
