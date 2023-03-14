@@ -172,7 +172,7 @@ function runProgram(){
     /***** animate the ball *****/
     ball.x+=ball.speedx;
     ball.y-=ball.speedy;
-    /******* ball bounds *******/
+    /******* ball bounds bounce *******/
     if(ball.y<=limits.top){
       if(Math.random()<.25)
       {ball.speedy*=1.5;}
@@ -183,8 +183,9 @@ function runProgram(){
       {ball.speedy*=1.5;}
       ball.speedy=-1*ball.speedy;
     }
-    /******* score bounds *******/
-    
+    /**** ball bounce off paddles ****/
+    /******* ball bounds score *******/
+
   }
   function updateScore()
   {
