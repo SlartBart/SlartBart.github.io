@@ -10,19 +10,30 @@ function runProgram(){
   // Constant Variables
   const FRAME_RATE = 60;
   const FRAMES_PER_SECOND_INTERVAL = 1000 / FRAME_RATE;
-  var player1 = 
+  var player2 = 
   {
     UP:"ArrowUp",
     DOWN:"ArrowDown",
     score:0,
+    UPPress: false,
+    DOWNPress: false
   };
-  var player2 = 
+  var player1 = 
   {
     UP:"w",
     DOWN:"s",
     score:0,
+    UPPress: false,
+    DOWNPress: false
   };
+  var gameStatus = 
+  {
+    bounceCount : 0,
+    newMatchScreen : false,
+  }
   var spacebar = " ";
+
+
   // Game Item Objects
   function getObject(id, speedx, speedy)
   {
@@ -39,10 +50,19 @@ function runProgram(){
   var ball = getObject("#ball", Math.floor(Math.random()*5)-2, Math.floor(Math.random()*5)-2);/* automatically randomizes the speed of the ball */
   var paddle1 = getObject("#paddle1", 0, 5);
   var paddle2 = getObject("#paddle2", 0, 5);
+  var board = getObject("#board", 0, 0);
+
+
+  var limits = {
+    top : 0,
+    bottom : board.height,
+    left : 0,
+    right : board.width,
+  }
   // one-time setup
   let interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
-  $(document).on('keydown', handleEvent);                           // change 'eventType' to the type of event you want to handle
-
+  $(document).on('keydown', startmove);                           // change 'eventType' to the type of event you want to handle
+  $(document).on('keyup', stopmove);
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
@@ -54,29 +74,61 @@ function runProgram(){
   function newFrame() {
     
     updateScore();
+    regardingTheBall();
+    movePaddle(player1, paddle1);
+    movePaddle(player2, paddle2);
+    boundCheck(paddle1);
+    boundCheck(paddle2);
+    updatePosition();
+    if(player1.score+player2.score>=20)
+    {
+      endGame();
+    }
   }
   
   /* 
   Called in response to events.
   */
-  function handleEvent(event) {
+  function startmove(event) {
     /*player1 movement */
-    if(event.key===player1.UP && paddle1.y>0)
+    console.log('pressed');
+    if(event.key===player1.UP)
     {
-      paddle1.y-=paddle1.speedy;
+      player1.UPPress = true;
     }
-    else if(event.key===player1.DOWN && paddle1.y<300)
+   if(event.key===player1.DOWN)
     {
-      paddle1.y+=paddle1.speedy;
+      player1.DOWNPress = true;
     }
     /*player2 movement */
-    if(event.key===player2.UP && paddle2.y>0)
+    if(event.key===player2.UP)
     {
-      paddle2.y-=paddle2.speedy; 
+      player2.UPPress = true;
     }
-    else if(event.key===player2.DOWN && paddle1.y<300)
+    if(event.key===player2.DOWN)
     {
-      paddle2.y+=paddle2.speedy;
+      player2.DOWNPress = true;
+    }
+  }
+  function stopmove(event)
+  {
+    console.log("depressed");
+    if(event.key===player1.UP)
+    {
+      player1.UPPress = false;
+    }
+   if(event.key===player1.DOWN)
+    {
+      player1.DOWNPress = false;
+    }
+    /*player2 movement */
+    if(event.key===player2.UP)
+    {
+      player2.UPPress = false;
+    }
+    if(event.key===player2.DOWN)
+    {
+      player2.DOWNPress = false;
     }
   }
 
@@ -92,16 +144,72 @@ function runProgram(){
         ball.speedy=1;
       }
   }
+  function movePaddle(player, paddle)
+  {
+    if(player.UPPress)
+    {
+      paddle.y-=paddle.speedy;
+    }
+    if(player.DOWNPress)
+    {
+      paddle.y+=paddle.speedy;
+    }
+  }
+  function boundCheck(paddle)
+  {
+    if(paddle.y<limits.top)
+    {
+      paddle.y=limits.top;
+    }
+    if(paddle.y>limits.bottom-paddle.height)
+    {
+      paddle.y=limits.bottom-paddle.height;
+    }
+  }
+  function regardingTheBall()
+  {
+    keepMoving();
+    /***** animate the ball *****/
+    ball.x+=ball.speedx;
+    ball.y-=ball.speedy;
+    /******* ball bounds *******/
+    if(ball.y<=limits.top){
+      if(Math.random()<.25)
+      {ball.speedy*=1.5;}
+      ball.speedy=-1*ball.speedy;
+    }
+    if(ball.y>=limits.bottom-ball.height){
+      if(Math.random()<.25)
+      {ball.speedy*=1.5;}
+      ball.speedy=-1*ball.speedy;
+    }
+    /******* score bounds *******/
+    
+  }
   function updateScore()
   {
+    if(ball.x<limits.left){
+      player2.score+=Math.floor((gameStatus.bounceCount/4)+1);
+    }
+    else if(ball.x>limits.right){
+      player1.score+=Math.floor((gameStatus.bounceCount/4)+1);
+    }
+    //player 2 on left, player 1 on right, and the conditional returns 
     /*insert conditionals for changing score after the ball passes a certain bound*/
     $("#playerscore1").text(player1.score);
     $("#playerscore2").text(player2.score);
   }
-  function updatePosition(id)/* use to move items paddle, and ball */
+  function updatePosition()  /* use jquery to move items paddle, and ball */
   {
-
+    
+    /* paddle section */
+    $(paddle1.id).css("top", paddle1.y + "px");
+    $(paddle2.id).css("top", paddle2.y + "px");
+    /* ball section */
+    $(ball.id).css("top", ball.y + "px");
+    $(ball.id).css("left", ball.x + "px");
   }
+  
   function endGame() {
     // stop the interval timer
     clearInterval(interval);
