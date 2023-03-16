@@ -57,3 +57,14 @@ body {
   position:absolute;
   left:310px;
 }
+#pause
+{
+  color:white;
+  position:absolute;
+  text-align:center;
+  left:300px;
+  top:150px;
+  width:200px;
+  font-size: large;
+  display:none;
+}
