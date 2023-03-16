@@ -68,3 +68,14 @@ body {
   font-size: large;
   display:none;
 }
+#WINNER
+{
+  color:white;
+  font-size:larger;
+  display:none;
+  left:300px;
+  top:150px;
+  position:absolute;
+  text-align:center;
+  display: none;
+}

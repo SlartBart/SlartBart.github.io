@@ -80,6 +80,8 @@ function runProgram(){
       movePaddle(player2, paddle2);
       boundCheck(paddle1);
       boundCheck(paddle2);
+      checkCollision(paddle1);
+      checkCollision(paddle2);
       updatePosition();
     }
     if(player1.score+player2.score>=20)
@@ -184,12 +186,12 @@ function runProgram(){
     /******* ball bounds bounce *******/
     if(ball.y<=limits.top){
       if(Math.random()<.25)
-      {ball.speedy*=1.5;}
+      {ball.speedy*=1.1;}
       ball.speedy=-1*ball.speedy;
     }
     if(ball.y>=limits.bottom-ball.height){
       if(Math.random()<.25)
-      {ball.speedy*=1.5;}
+      {ball.speedy*=1.1;}
       ball.speedy=-1*ball.speedy;
     }
   }
@@ -199,13 +201,13 @@ function runProgram(){
     if(ball.x<limits.left){
       player2.score+=Math.floor((gameStatus.bounceCount/4)+1);
       resetBall();
-      subplayer = "player 2 ";
+      subplayer = "player 1 ";
     }
     else if(ball.x>limits.right-ball.width){
       
       player1.score+=Math.floor((gameStatus.bounceCount/4)+1);
       resetBall();
-      subplayer = "player 1 ";
+      subplayer = "player 2 ";
     }
     /* if not paused, don't display pause screen */
     if(pause)
@@ -222,6 +224,7 @@ function runProgram(){
     /*insert conditionals for changing score after the ball passes a certain bound*/
     $("#playerscore1").text(player1.score);
     $("#playerscore2").text(player2.score);
+    $("#matchPoint").text(Math.floor(gameStatus.bounceCount/4)+1);
   }
   function resetBall()
   {
@@ -237,6 +240,20 @@ function runProgram(){
     paddle2.y=150;
     
   }
+  function checkCollision(paddle)
+  {
+    if(
+      (ball.x<paddle.x+paddle.width)&&
+      (ball.x+ball.width>paddle.x)&&
+      (ball.y<paddle.y+paddle.height)&&
+      (ball.y+ball.height>paddle.y)
+      )
+      {
+        ball.speedx*=-1.1;
+        ball.speedy+=Math.floor(Math.random()*4)-2;
+        gameStatus.bounceCount+=1;
+      }
+  }
   function updatePosition()  /* use jquery to move items paddle, and ball */
   {
     
@@ -247,7 +264,21 @@ function runProgram(){
     $(ball.id).css("top", ball.y + "px");
     $(ball.id).css("left", ball.x + "px");
   }
-  function endGame() {
+  function endGame() 
+  {
+    $("#WINNER").css("display", "block");
+    if(player1.score>player2.score)
+    {
+      $("#WINNER").text("player 1 wins!!!");
+    }
+    else if(player1.score<player2.score)
+    {
+      $("#WINNER").text("player 2 wins!!!");
+    }
+    else
+    {
+      $("winner").text("its....... A TIE!");
+    }
     // stop the interval timer
     clearInterval(interval);
 
