@@ -113,7 +113,10 @@ function runProgram(){
     }
     if(event.key===spacebar)
     {
+      if(!pause)
+      {gameStatus.bounceCount=0;} // if paused, reset on spacebar press
       pause=false;
+      
     }
   } // checks if a key is pressed to mark it 
   function stopmove(event)
@@ -215,7 +218,7 @@ function runProgram(){
       $("#pause").css("display", "block");
       $("#player").text(subplayer);
       $("#points").text(Math.floor((gameStatus.bounceCount/4)+1));
-      gameStatus.bounceCount=0;//reset bounce count, since it only counts each match
+      ;//reset bounce count, since it only counts each match
 
     }
     else
