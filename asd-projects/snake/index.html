@@ -1,113 +1,18 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>
-            My webpage!
-        </title>
-        <style>
-            body {
-                background: rgb(81, 179, 125, 0.664);
-                color: rgb(45, 45, 45);
-                padding: 10px;
-                font-family: arial;
-            }
-            #all-contents {
-              max-width: 800px;
-                margin: auto;
-            }
-         
-            /* navigation menu */
-            nav {
-                background: rgba(219, 118, 35, 0.794);
-               margin: 20px;
-               margin-bottom: 20px;
-                display: flex;
-                padding: 10px;
-            }
-            h1 {
-                display: flex;
-                align-items: center;
-                color: white;
-                flex: 1;
-                margin: 0;
-            }
-            #nav-ul {
-                list-style-image: none;
-            }
-            .nav-li {
-                display: inline-block;
-                padding: 0 10px;
-            }
-            a {
-                text-decoration: none;
-                color: #fff;
-            }
-         
-            /* main container area beneath menu */
-            main {
-                background: rgb(245, 238, 219);
-                display: flex;
-            }
-            .sidebar {
-                margin-right: 25px;
-                padding: 10px;
-            }
-            .sidebar-img {
-                width: 200px;
-            }
-            .content {
-                flex: 1;
-                padding: 15px;
-            }
-            #interests {
-                border: 4px silver ridge;
-                padding: 8px;
-            }
-            h2, h3 {
-                margin: 0px;
-            }
-            
-
-            
-         </style>
-    </head>
-
-    <body>
-        <!--All content goes here-->
-        <div id="all-contents">
-            
-            <nav>
-                <h1>Micah's Glorious Website</h1>
-                <ul id="nav-ul">
-                    <li class="nav-li">
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li class="nav-li">
-                        <a href="portfolio.html">Portfolio</a>
-                    </li>
-                </ul>
-            </nav>
-            <main>
-                <!--sidebar section-->
-                <div class="sidebar">
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.D4DQseHIiYSCgSAW2XOKvgHaHa%26pid%3DApi&f=1" class="sidebar-img">
-                </div>
-
-                <!--Content section-->
-                <div class="content">
-                    <h2>Micah M</h2>
-                    <p>Student of Louisiana Virtual Charter Academy</p>
-                    <!--Interests section-->
-                    <div id="interests">
-                        <h3>Interests</h3>
-                        <ul>
-                            <li>Coding- particularly working on C, JavaScript, HTML, and CSS.</li>
-                            <li>Robotics- have began work using Lego Mindstorms EV3.</li>
-                            <li>Algebra- because square roots are radical.</li>
-                        </ul>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </body>
+  <head>
+    <title>Title</title>
+    <!-- Load CSS files -->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    
+    <!-- Load JavaScript files -->
+    <script src="jquery.min.js"></script>
+    <script src="index.js"></script>
+  </head>
+  
+  <body>
+    <div id='board'>
+      <div id='gameItem'></div>
+    </div>
+  </body>
 </html>
