@@ -113,7 +113,7 @@ function runProgram(){
     }
     if(event.key===spacebar)
     {
-      if(!pause)
+      if(pause)
       {gameStatus.bounceCount=0;} // if paused, reset on spacebar press
       pause=false;
       
@@ -218,8 +218,9 @@ function runProgram(){
       $("#pause").css("display", "block");
       $("#player").text(subplayer);
       $("#points").text(Math.floor((gameStatus.bounceCount/4)+1));
-      ;//reset bounce count, since it only counts each match
-
+      //reset bounce count, since it only counts each match
+      paddle1.speedy=5;
+      paddle2.speedy=5;
     }
     else
     {
@@ -255,7 +256,9 @@ function runProgram(){
       /* collision detected */
       )
       {
-        ball.speedx*=-1.1; // always increase ball speed by 1.1 times its origional, and negative it so the ball turns around
+        /*add bug fix software here!! friday work!*///if hit at akward angle, could lead to glitch where ball kept passing inside the paddle until phased out
+        ball.speedx*=-1.2; // always increase ball speed by 1.1 times its origional, and negative it so the ball turns around
+        paddle.speedy*=1.2; // increase paddle speed, because if someone has good reflexes they could play for a while
         ball.speedy+=Math.floor(Math.random()*4)-2;// randomize speed y to make it fun
         gameStatus.bounceCount+=1;// increase bounce count!!
       }
