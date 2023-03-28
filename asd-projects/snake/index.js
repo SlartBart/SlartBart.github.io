@@ -42,7 +42,7 @@ function runProgram(){
     }
     var play=true;
     var allowInput=false;
-    
+    var direction = "left";
   // one-time setup
   var interval = setInterval(newFrame, 200);   // execute newFrame every 0.0166 seconds (60 Frames per second)
   $(document).on('keydown', handleEvent);                           // change 'eventType' to the type of event you want to handle
@@ -63,6 +63,10 @@ function runProgram(){
     regardingTheApple();
     slitherP2();
     }
+    else{//if collided
+      alert("your score is: "+ apple.eaten +" points!");
+      endGame();
+    }
     
     
   }
@@ -72,25 +76,30 @@ function runProgram(){
   */
   function handleEvent(event) {
   if(allowInput){
-    if(event.key===KEY.up) // because of how snake traditionally moves, x and y movement are mutually exclusive. 
+    
+    if(event.key===KEY.up && direction != "down") // because of how snake traditionally moves, x and y movement are mutually exclusive. 
     {
       head.speedy = -20;
       head.speedx = 0;
+      direction = "up";
     }
-    if(event.key===KEY.down)
+    if(event.key===KEY.down && direction != "up")// the additional conditional keeps the snake from being able to double back on itself. 
     {
       head.speedy = 20;
       head.speedx = 0;
+      direction = "down";
     }
-    if(event.key===KEY.left)
+    if(event.key===KEY.left && direction != "right")
     {
       head.speedy = 0;
       head.speedx = -20;
+      direction = "left";
     }
-    if(event.key===KEY.right)
+    if(event.key===KEY.right && direction != "left")
     {
       head.speedy = 0;
       head.speedx = 20;
+      direction = "right";
     }allowInput=false;
   }
 }
@@ -158,13 +167,11 @@ function runProgram(){
       if(snake[0].x===snake[i].x&&snake[0].y===snake[i].y)//body collision check
       {
         play=false;
-        endGame();
       }
     }
     if(snake[0].x<0||snake[0].x>780||snake[0].y<0||snake[0].y>580)//wall collision check
     {
       play=false;
-      endGame();
     }
   }
   function grow()// when apple is eaten, create a new div, and place new snake bit
@@ -179,7 +186,6 @@ function runProgram(){
     // stop the interval timer
     clearInterval(interval);
 
-    alert("your score is: "+ apple.eaten +" points!");
 
     // turn off event handlers
     $(document).off();
