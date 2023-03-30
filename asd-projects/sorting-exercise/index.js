@@ -19,9 +19,9 @@ async function bubbleSort(array)
     for(var i = 0; i < array.length; i++)
     {
         for(var j = i+1; j < array.length; j++)
-        {
+        {// iterate through all values
             if(array[j].value<array[i].value)
-            {
+            { //if one is smaller, replace
                 swap(array, i, j);
                 updateCounter(bubbleCounter);
                 await sleep();
@@ -36,7 +36,7 @@ async function quickSort(array, left, right)
     if(right - left > 0)
     {
         var index = await partition(array, left, right);
-        if(left < index - 1)
+        if(left < index - 1)//create divide and conquer structure
         {
             await quickSort(array, left, index-1);
         }
@@ -50,18 +50,18 @@ async function quickSort(array, left, right)
 // TODOs 4 & 5: Implement partition
 async function partition(array, left, right)
 {
-    var pivot=array[Math.floor((right+left)/2)].value;
+    var pivot=array[Math.floor((right+left)/2)].value;//sets a pivot in the middle
     while(left < right)
     {
-        while(array[left].value < pivot)
+        while(array[left].value < pivot)//makes the sort move inward
         {
             left++;
         }
-        while(array[right].value > pivot)
+        while(array[right].value > pivot)//also moves inward
         {
             right--;
         }
-        if(right > left)
+        if(right > left)//swaps 
         {
             swap(array, left, right);
             updateCounter(quickCounter);
@@ -72,7 +72,7 @@ async function partition(array, left, right)
 }
 
 // TODO 1: Implement swap
-function swap(array, i, j)
+function swap(array, i, j)//need a placeholder var because of the nature of data movement
 {
     var temp = array[i];
     array[i] = array[j];
