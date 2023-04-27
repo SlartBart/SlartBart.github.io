@@ -52,7 +52,7 @@ var runLevels = function (window) {
     enemy.onProjectileCollision = function()
     {
       game.increaseScore(100);
-      enemy.fadeOut(flyTo(50,50));
+      enemy.fadeOut();
     };
     
   }
